@@ -424,7 +424,7 @@ __exports.OvaleAuraClass = __class(OvaleAuraBase, {
         self_pool:Drain()
     end,
     COMBAT_LOG_EVENT_UNFILTERED = function(self, event, ...)
-        self:DebugTimestamp("COMBAT_LOG_EVENT_UNFILTERED", CombatLogGetCurrentEventInfo())
+--        self:DebugTimestamp("COMBAT_LOG_EVENT_UNFILTERED", CombatLogGetCurrentEventInfo())
         local _, cleuEvent, _, sourceGUID, _, _, _, destGUID, _, _, _, spellId, spellName, _, auraType, amount = CombatLogGetCurrentEventInfo()
         local mine = (sourceGUID == self_playerGUID or OvaleGUID:IsPlayerPet(sourceGUID))
         if mine and cleuEvent == "SPELL_MISSED" then
@@ -438,7 +438,7 @@ __exports.OvaleAuraClass = __class(OvaleAuraBase, {
             local unitId = OvaleGUID:GUIDUnit(destGUID)
             self:DebugTimestamp("UnitId: ", unitId)
             if unitId then
-                if  not OvaleGUID.UNIT_AURA_UNIT[unitId] then
+                if  not OvaleGUID.UNIT_AURA_UNIT[unitId] and mine then
                     self:DebugTimestamp("%s: %s (%s)", cleuEvent, destGUID, unitId)
                     self:ScanAuras(unitId, destGUID)
                 end
@@ -503,8 +503,10 @@ __exports.OvaleAuraClass = __class(OvaleAuraBase, {
         self_pool:Drain()
     end,
     UNIT_AURA = function(self, event, unitId)
-        self:Debug(event, unitId)
-        self:ScanAuras(unitId)
+	    if (unitId == "pet" or unitId == "target" or unitId == "player") then
+			self:Debug(event, unitId)
+			self:ScanAuras(unitId)
+		end
     end,
     Ovale_UnitChanged = function(self, event, unitId, guid)
         if (unitId == "pet" or unitId == "target") and guid then

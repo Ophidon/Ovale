@@ -20,15 +20,6 @@ local OvaleGUIDBase = OvaleDebug:RegisterDebugging(Ovale:NewModule("OvaleGUID", 
 local PET_UNIT = {}
 do
     PET_UNIT["player"] = "pet"
-    for i = 1, 5, 1 do
-        PET_UNIT["arena" .. i] = "arenapet" .. i
-    end
-    for i = 1, 4, 1 do
-        PET_UNIT["party" .. i] = "partypet" .. i
-    end
-    for i = 1, 40, 1 do
-        PET_UNIT["raid" .. i] = "raidpet" .. i
-    end
     setmetatable(PET_UNIT, {
         __index = function(t, unitId)
             return unitId .. "pet"
@@ -40,28 +31,8 @@ local UNIT_AURA_UNITS = {}
 do
     insert(UNIT_AURA_UNITS, "player")
     insert(UNIT_AURA_UNITS, "pet")
-    insert(UNIT_AURA_UNITS, "vehicle")
     insert(UNIT_AURA_UNITS, "target")
-    insert(UNIT_AURA_UNITS, "focus")
-    for i = 1, 40, 1 do
-        local unitId = "raid" .. i
-        insert(UNIT_AURA_UNITS, unitId)
-        insert(UNIT_AURA_UNITS, PET_UNIT[unitId])
-    end
-    for i = 1, 4, 1 do
-        local unitId = "party" .. i
-        insert(UNIT_AURA_UNITS, unitId)
-        insert(UNIT_AURA_UNITS, PET_UNIT[unitId])
-    end
-    for i = 1, 4, 1 do
-        insert(UNIT_AURA_UNITS, "boss" .. i)
-    end
-    for i = 1, 5, 1 do
-        local unitId = "arena" .. i
-        insert(UNIT_AURA_UNITS, unitId)
-        insert(UNIT_AURA_UNITS, PET_UNIT[unitId])
-    end
-    insert(UNIT_AURA_UNITS, "npc")
+
 end
 local UNIT_AURA_UNIT = {}
 for i, unitId in ipairs(UNIT_AURA_UNITS) do
